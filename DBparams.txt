@@ -1,0 +1,51 @@
+drop table IF EXISTS object cascade;
+drop table IF EXISTS lot cascade;
+drop table IF EXISTS cep cascade;
+drop table IF EXISTS polka cascade;
+drop table IF EXISTS shkaf cascade;
+drop table IF EXISTS shkaf_cep cascade;
+drop table IF EXISTS cep_object cascade;
+
+create table shkaf (
+	shkaf_id int not null primary key
+);
+
+create table cep (
+	cep_id int not null primary key,
+	shkaf_id int not null references shkaf(shkaf_id)
+);
+
+--create table cep_object (
+--	cep_id int not null references cep(cep_id);	
+--);
+
+create table object (
+	object_id int not null serial primary key,
+	object_name varchar(30) not null,
+	object_amount int,
+	cep_id int not null references cep(cep_id)
+);
+
+insert into shkaf(shkaf_id) values ('1');
+insert into shkaf(shkaf_id) values ('2');
+
+insert into cep(cep_id, shkaf_id) values ('1', '1');
+insert into cep(cep_id, shkaf_id) values ('2', '2');
+insert into cep(cep_id, shkaf_id) values ('3', '2');
+insert into cep(cep_id, shkaf_id) values ('4', '1');
+
+insert into object(object_name, object_amount, cep_id) values ('гвоздь', '500', '1');
+insert into object(object_name, object_amount, cep_id) values ('напильник', '15', '2');
+insert into object(object_name, object_amount, cep_id) values ('саморез', '4200', '1');
+insert into object(object_name, object_amount, cep_id) values ('молоток', '20', '2');
+insert into object(object_name, object_amount, cep_id) values ('паяльник', '9', '2');
+insert into object(object_name, object_amount, cep_id) values ('болгарка', '4', '3');
+insert into object(object_name, object_amount, cep_id) values ('осциллограф', '2', '3');
+insert into object(object_name, object_amount, cep_id) values ('транзистор', '28', '4');
+insert into object(object_name, object_amount, cep_id) values ('конденсаторы', '14', '4');
+
+
+select object.object_name, object.object_amount, cep.cep_id, shkaf.shkaf_id from object left join cep on object.cep_id = cep.cep_id left join shkaf on cep.shkaf_id = shkaf.shkaf_id;
+
+
+Postgresql
