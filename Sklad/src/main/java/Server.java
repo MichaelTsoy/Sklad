@@ -5,28 +5,27 @@ import java.net.Socket;
 
 public class Server implements Runnable {
     int port;
-    public Server(int port) throws IOException {
+    Server(int port) {
         this.port = port;
-        Thread t = new Thread(this, "netServer");
+//        Thread t = new Thread(this, "netServer");
         System.out.println("создан поток сетевого сервера");
-        t.start();
-    }
-    public void Client (Socket sock) {
-
+        (new Thread(this, "netServer")).start();
     }
     @Override
     public void run() {
+//        ServerSocket serverSocket = null;
+        try {
+            ServerSocket serverSocket = new ServerSocket(port);
 
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("server socket created");
-            while (true) {
-                try {
-                        Clientconn clientconn = new Clientconn(serverSocket.accept());
-                    } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        while (true) {
+            try {
+//            Class.forName("org.postgresql.Driver");
 
-
+//            Socket asd = serverSocket.accept();
+                new Authentication(serverSocket.accept());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

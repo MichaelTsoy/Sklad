@@ -1,4 +1,4 @@
-drop table IF EXISTS object cascade;
+﻿drop table IF EXISTS object cascade;
 drop table IF EXISTS lot cascade;
 drop table IF EXISTS cep cascade;
 drop table IF EXISTS polka cascade;
@@ -47,5 +47,11 @@ insert into object(object_name, object_amount, cep_id) values ('конденса
 
 select object.object_name, object.object_amount, cep.cep_id, shkaf.shkaf_id from object left join cep on object.cep_id = cep.cep_id left join shkaf on cep.shkaf_id = shkaf.shkaf_id;
 
+create table users (
+	user_name varchar(30) not null,
+	user_pass varchar(100) not null
+);
+insert into users(user_name, user_pass) values ('Albert', '123');
+insert into users(user_name, user_pass) values ('Robert', '456');
 
 Postgresql

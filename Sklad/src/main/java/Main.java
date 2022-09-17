@@ -6,7 +6,7 @@ public class Main {
         new Server(PORT);
         System.out.println("мейн заверешен");
 //        Db dbconn =
-        new Db();
+//        new Db();
 
     }
 }

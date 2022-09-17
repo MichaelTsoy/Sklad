@@ -18,14 +18,22 @@ public class Client {
 //                             new InputStreamReader(
 //                                     socket.getInputStream()));
 
-             ObjectOutputStream wr = new ObjectOutputStream(socket.getOutputStream()))
+             ObjectOutputStream wr = new ObjectOutputStream(socket.getOutputStream()))//;
+//             ObjectInputStream in = new ObjectInputStream(socket.getInputStream()))
         {
             System.out.println("Connected to server");
-            Tovar tov = new Tovar();
-            tov.Name = "Drel";
+            User tov = new User();
+            tov.name = "Albert";
+            tov.pass = "123";
             wr.writeObject(tov);
             wr.flush();
-//            wr.close();
+            Tovar asd = new Tovar();
+            asd.setName("tovar1");
+            asd.setAmount(2);
+            wr.writeObject(asd);
+            wr.flush();
+            wr.close();
+//            in.readObject()
 
         } catch (IOException e) {
             e.printStackTrace();
