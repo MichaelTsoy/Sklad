@@ -4,14 +4,16 @@ import java.sql.*;
 
 public class Authentication implements Runnable {
     Socket sock;
-    Authentication(Socket sock) {
+    String name;
+    Authentication(Socket sock, String name) {
         this.sock = sock;
+        this.name = name;
         new Thread(this).start();
     }
     @Override
     public void run() {
         try {
-            run1run();
+            runauth();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
@@ -28,11 +30,12 @@ public class Authentication implements Runnable {
 //            e.printStackTrace();
 //        }
     }
-    public void run1run() throws IOException, SQLException, ClassNotFoundException{
+    public void runauth() throws IOException, SQLException, ClassNotFoundException{
+        System.out.println(Thread.currentThread().getName().toString());
         ObjectInputStream ois = new ObjectInputStream(sock.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
         BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(), "cp1251"));
 
         User userIn = new User();
         userIn = (User)ois.readObject();
@@ -49,9 +52,10 @@ public class Authentication implements Runnable {
 
         if (rs.next()) {
             System.out.println("user    " + user.name + "      authorized");
-            bw.write("Authorization succedeed");
+            String str = "Authorization succedeed auth";
+            bw.write(str, 0, str.length());
             bw.flush();
-            new Clientconn(sock, user.name, con);
+            new Clientconn(ois, oos, br, bw, user.name, con);
         } else {
             System.out.println("Неправильный логин или пароль");
         }
